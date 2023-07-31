@@ -10,19 +10,22 @@ import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
 	// const router = useRouter();
-	const { isSubmitting, handleSubmit } = useFormSubmit(async (values: any) => {
-		console.log(values);
-		try {
-			const response = await loginUser(values);
-			console.log("login successfully", response);
-			toast.success("Login Success");
-			// router.push("/");
-			// Handle successful signup, e.g., show success message, navigate to login page, etc.
-		} catch (error: any) {
-			console.log("signup failed", error.message);
-			// Handle signup failure, e.g., show error message to the user, reset form, etc.
+	const { isSubmitting, handleSubmit } = useFormSubmit(
+		async (values: any, formikHelpers: any) => {
+			console.log(values);
+			try {
+				const response = await loginUser(values);
+				console.log("login successfully", response);
+				toast.success("Login Success");
+				// router.push("/");
+				// Handle successful signup, e.g., show success message, navigate to login page, etc.
+				formikHelpers.resetForm();
+			} catch (error: any) {
+				console.log("signup failed", error.message);
+				// Handle signup failure, e.g., show error message to the user, reset form, etc.
+			}
 		}
-	});
+	);
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center bg-gradient-to-r from-blue-500 to-purple-500 text-black">
