@@ -3,16 +3,26 @@
 import React from "react";
 import AuthForm from "@/components/AuthForm";
 import { validationSchema, initialFormValues } from "@/utils/formValidation";
+// import { useRouter } from "next/router";
+import useFormSubmit from "@/hooks/useFormSubmit";
+import { loginUser } from "@/utils/apiClient";
+import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
-	const handleSubmit = async (values: any) => {
+	// const router = useRouter();
+	const { isSubmitting, handleSubmit } = useFormSubmit(async (values: any) => {
+		console.log(values);
 		try {
-			// Handle your API call here for login
-			console.log("login successfully", values);
-		} catch (error) {
-			console.log("login failed", error.message);
+			const response = await loginUser(values);
+			console.log("login successfully", response);
+			toast.success("Login Success");
+			// router.push("/");
+			// Handle successful signup, e.g., show success message, navigate to login page, etc.
+		} catch (error: any) {
+			console.log("signup failed", error.message);
+			// Handle signup failure, e.g., show error message to the user, reset form, etc.
 		}
-	};
+	});
 
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center bg-gradient-to-r from-blue-500 to-purple-500 text-black">

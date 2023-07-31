@@ -4,6 +4,7 @@ const useFormSubmit = (onSubmitCallback: (values: any) => Promise<void>) => {
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const handleSubmit = async (values: any) => {
+		console.log(values);
 		setIsSubmitting(true);
 		try {
 			await onSubmitCallback(values);

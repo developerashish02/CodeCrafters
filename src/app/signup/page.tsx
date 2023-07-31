@@ -2,17 +2,20 @@
 import React from "react";
 import AuthForm from "@/components/AuthForm";
 import { validationSchema, initialFormValues } from "@/utils/formValidation";
+import useFormSubmit from "@/hooks/useFormSubmit";
+import { signupUser } from "@/utils/apiClient";
 
 const SignupPage = () => {
-	const handleSubmit = async (values: any) => {
+	const { isSubmitting, handleSubmit } = useFormSubmit(async (values: any) => {
 		try {
-			// Handle your API call here for signup
-			console.log("signup successfully", values);
-		} catch (error) {
+			const response = await signupUser(values);
+			console.log("signup successfully", response);
+			// Handle successful signup, e.g., show success message, navigate to login page, etc.
+		} catch (error: any) {
 			console.log("signup failed", error.message);
+			// Handle signup failure, e.g., show error message to the user, reset form, etc.
 		}
-	};
-
+	});
 	return (
 		<div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center bg-gradient-to-r from-blue-500 to-purple-500 text-black">
 			<div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
