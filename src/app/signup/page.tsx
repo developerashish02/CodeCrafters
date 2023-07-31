@@ -1,5 +1,7 @@
 "use client";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import axios from "axios";
 import * as Yup from "yup";
 
 const SignupPage = () => {
@@ -20,8 +22,15 @@ const SignupPage = () => {
 			.required("Email is required"),
 	});
 
-	const handleSubmit = (values: any, { setSubmitting }: any) => {
-		console.log(values);
+	const handleSubmit = async (values: any, { setSubmitting }: any) => {
+		try {
+			const response = await axios.post("/api/users/signup", values);
+			console.log("signup successfully", response.data);
+		} catch (error: any) {
+			console.log("signup failed", error.message);
+		} finally {
+			console.log(values);
+		}
 		setSubmitting(false);
 	};
 
