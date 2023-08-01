@@ -2,13 +2,13 @@ import dbConnect from "@/dbConfig/dbConfig";
 import Blog from "@/models/blog";
 import { NextRequest, NextResponse } from "next/server";
 
-dbConnect();
 export async function POST(request: NextRequest) {
 	try {
+		await dbConnect();
 		const reqBody = await request.json();
 		const { title, content, imageUrl, videoUrl } = reqBody;
 
-		if (!title || !content) {
+		if (!title || !content || !imageUrl || !videoUrl) {
 			return new NextResponse(
 				JSON.stringify({ error: "title or content fields are required." }),
 				{ status: 400 }
@@ -46,6 +46,7 @@ export async function GET() {
 
 		return NextResponse.json(blogs);
 	} catch (error: any) {
+		console.log(error, "error from app");
 		NextResponse.json(
 			{
 				error: "Internal server error.",

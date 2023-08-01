@@ -1,18 +1,21 @@
-// components/BlogCard.js
+// components/BlogCard.tsx
 import React from "react";
+import { BlogData } from "@/models/blog";
 import CommentCard from "@/components/CommentCard";
 import Image from "next/image";
 
-const BlogCard = ({ blog }) => {
+const BlogCard: React.FC<{ blog: BlogData }> = ({ blog }) => {
 	return (
 		<div className="bg-white rounded-lg shadow p-4">
 			<h2 className="text-xl font-semibold mb-2">{blog.title}</h2>
 			<p className="text-gray-600 mb-4">{blog.content}</p>
 			{blog.imageUrl && (
-				<Image
+				<image
 					src={blog.imageUrl}
 					alt={blog.title}
 					className="w-full rounded-md mb-2"
+					width={800}
+					height={600}
 				/>
 			)}
 			{blog.videoUrl && (
@@ -27,10 +30,9 @@ const BlogCard = ({ blog }) => {
 				</div>
 			)}
 			<h3 className="font-medium text-lg mb-2">Comments:</h3>
-			{blog.comments.map((comment: any) => (
+			{blog?.comments?.map((comment) => (
 				<CommentCard key={comment._id} comment={comment} />
 			))}
-			{/* Add comment form here */}
 		</div>
 	);
 };

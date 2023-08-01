@@ -28,3 +28,12 @@ export const loginUser = async (userData: any) => {
 		throw new Error(error.response?.data?.message || "Failed to login.");
 	}
 };
+
+export const createBlog = async (userData: any) => {
+	try {
+		const response = await apiClient.post("/api/blogs", userData);
+		return response.data;
+	} catch (error: any) {
+		throw new Error(error.response?.data?.message || "Failed to uplod blog.");
+	}
+};
