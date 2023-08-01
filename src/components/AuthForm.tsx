@@ -44,6 +44,22 @@ const AuthForm: React.FC<AuthFormProps> = ({
 							/>
 						</div>
 					)}
+					<div className="mb-4">
+						<label htmlFor="email" className="block text-gray-700 mb-2">
+							Email
+						</label>
+						<Field
+							type="text"
+							id="email"
+							name="email"
+							className="w-full px-3 py-2 border rounded-lg"
+						/>
+						<ErrorMessage
+							name="email"
+							component="div"
+							className="text-red-500"
+						/>
+					</div>
 
 					<div className="mb-4">
 						<label htmlFor="password" className="block text-gray-700 mb-2">
@@ -57,23 +73,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
 						/>
 						<ErrorMessage
 							name="password"
-							component="div"
-							className="text-red-500"
-						/>
-					</div>
-
-					<div className="mb-4">
-						<label htmlFor="email" className="block text-gray-700 mb-2">
-							Email
-						</label>
-						<Field
-							type="text"
-							id="email"
-							name="email"
-							className="w-full px-3 py-2 border rounded-lg"
-						/>
-						<ErrorMessage
-							name="email"
 							component="div"
 							className="text-red-500"
 						/>

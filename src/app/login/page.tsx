@@ -18,12 +18,12 @@ const LoginPage = () => {
 			try {
 				const response = await loginUser(values);
 				console.log("login successfully", response);
-				router.push("/");
 				toast.success("login successfully", {
 					position: "top-right",
 					autoClose: 3000,
 					hideProgressBar: true,
 				});
+				router.push("/blog");
 				formikHelpers.resetForm();
 			} catch (error: any) {
 				console.log("Login failed", error.message);
