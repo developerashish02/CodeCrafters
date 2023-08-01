@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { createBlog } from "@/utils/apiClient";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ToastContainer";
 
 const CreateBlogForm: React.FC = () => {
 	const router = useRouter();
@@ -28,12 +29,18 @@ const CreateBlogForm: React.FC = () => {
 			const response = await createBlog(values);
 			console.log(response, "response");
 			alert("Blog created successfully!");
+			toast.success("Blog created successfully", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			router.push("/");
-
-			// You can redirect the user to the blogs page or clear the form after successful submission.
-		} catch (error) {
-			console.error("Failed to create blog", error);
-			alert("Failed to create blog. Please try again.");
+		} catch (error: any) {
+			toast.error(error.message, {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 		} finally {
 			setSubmitting(false);
 		}
@@ -132,7 +139,7 @@ const CreateBlogForm: React.FC = () => {
 						<button
 							type="submit"
 							disabled={isSubmitting}
-							className={`mt-2 bg-blue-500 text-white px-4 py-2 rounded-md ${
+							className={`mt-2 bg-blue-500 text-white px-4 py-2 rounded-md w-full ${
 								isSubmitting
 									? "opacity-50 cursor-not-allowed"
 									: "hover:bg-blue-600"

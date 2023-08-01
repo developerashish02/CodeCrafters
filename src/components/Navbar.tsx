@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ToastContainer";
 
 const Navbar = () => {
 	// const { isLoggedIn, logout } = useAuth();
@@ -10,8 +11,18 @@ const Navbar = () => {
 	const logout = async () => {
 		try {
 			await axios.get("api/users/logout");
+			toast.success("logout successfully", {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			router.push("/login");
-		} catch (error) {
+		} catch (error: any) {
+			toast.error(error.message, {
+				position: "top-right",
+				autoClose: 3000,
+				hideProgressBar: true,
+			});
 			console.log(error, "error while logout");
 		}
 	};

@@ -5,6 +5,7 @@ import { validationSchema, initialFormValues } from "@/utils/formValidation";
 import useFormSubmit from "@/hooks/useFormSubmit";
 import { signupUser } from "@/utils/apiClient";
 import { useRouter } from "next/navigation";
+import { toast } from "@/components/ToastContainer";
 import Link from "next/link";
 
 const SignupPage = () => {
@@ -16,11 +17,19 @@ const SignupPage = () => {
 				const response = await signupUser(values);
 				console.log("signup successfully", response);
 				router.push("/login");
+				toast.success("signup successfully", {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: true,
+				});
 				formikHelpers.resetForm();
-				// Handle successful signup, e.g., show success message, navigate to login page, etc.
 			} catch (error: any) {
+				toast.error(error.message, {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: true,
+				});
 				console.log("signup failed", error.message);
-				// Handle signup failure, e.g., show error message to the user, reset form, etc.
 			}
 		}
 	);

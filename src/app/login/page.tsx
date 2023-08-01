@@ -3,12 +3,13 @@
 import React from "react";
 import AuthForm from "@/components/AuthForm";
 import { validationSchema, initialFormValues } from "@/utils/formValidation";
-// import { useRouter } from "next/router";
+
 import useFormSubmit from "@/hooks/useFormSubmit";
 import { loginUser } from "@/utils/apiClient";
-import { toast } from "react-hot-toast";
+import { toast } from "@/components/ToastContainer";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
 const LoginPage = () => {
 	const router = useRouter();
 	const { isSubmitting, handleSubmit } = useFormSubmit(
@@ -17,12 +18,20 @@ const LoginPage = () => {
 			try {
 				const response = await loginUser(values);
 				console.log("login successfully", response);
-				toast.success("Login Success");
 				router.push("/");
-				// Handle successful signup, e.g., show success message, navigate to login page, etc.
+				toast.success("login successfully", {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: true,
+				});
 				formikHelpers.resetForm();
 			} catch (error: any) {
 				console.log("Login failed", error.message);
+				toast.error(error.message, {
+					position: "top-right",
+					autoClose: 3000,
+					hideProgressBar: true,
+				});
 				// Handle signup failure, e.g., show error message to the user, reset form, etc.
 			}
 		}
