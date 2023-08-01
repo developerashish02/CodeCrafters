@@ -6,7 +6,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 interface AuthFormProps {
 	initialValues: any;
 	validationSchema: any;
-	onSubmit: (values: any) => void;
+	onSubmit: (values: any, formikHelpers: any) => void;
 	submitButtonText: string;
 	showUsernameField?: boolean;
 }
