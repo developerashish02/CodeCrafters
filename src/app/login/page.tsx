@@ -7,9 +7,9 @@ import { validationSchema, initialFormValues } from "@/utils/formValidation";
 import useFormSubmit from "@/hooks/useFormSubmit";
 import { loginUser } from "@/utils/apiClient";
 import { toast } from "react-hot-toast";
-
+import { useRouter } from "next/navigation";
 const LoginPage = () => {
-	// const router = useRouter();
+	const router = useRouter();
 	const { isSubmitting, handleSubmit } = useFormSubmit(
 		async (values: any, formikHelpers: any) => {
 			console.log(values);
@@ -17,11 +17,11 @@ const LoginPage = () => {
 				const response = await loginUser(values);
 				console.log("login successfully", response);
 				toast.success("Login Success");
-				// router.push("/");
+				router.push("/");
 				// Handle successful signup, e.g., show success message, navigate to login page, etc.
 				formikHelpers.resetForm();
 			} catch (error: any) {
-				console.log("signup failed", error.message);
+				console.log("Login failed", error.message);
 				// Handle signup failure, e.g., show error message to the user, reset form, etc.
 			}
 		}

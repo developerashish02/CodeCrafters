@@ -9,8 +9,10 @@ const apiClient = axios.create({
 
 // for the sign in user
 export const signupUser = async (userData: any) => {
+	console.log(userData, "User data from signup user api client file");
 	try {
 		const response = await apiClient.post("/api/users/signup", userData);
+		console.log("User data from apiClient file", userData);
 		return response.data;
 	} catch (error: any) {
 		throw new Error(error.response?.data?.message || "Failed to sign up.");

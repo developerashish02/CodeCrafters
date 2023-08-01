@@ -1,35 +1,32 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/models/userModal";
 import { NextRequest, NextResponse } from "next/server";
-import bcryptjs from "bcryptjs";
 
 connect();
 
 export async function POST(request: NextRequest) {
+	console.log(request, "Request from backend");
 	try {
 		const reqBody = await request.json();
+
 		const { username, email, password } = reqBody;
 
-		console.log(reqBody);
+		console.log(reqBody, "Req body from backend route file");
 
-		// checking if user is alredy exist
+		// Checking if user already exists
 		const user = await User.findOne({ email });
 
 		if (user) {
 			return NextResponse.json(
-				{ error: "User is alredy exists" },
-				{ status: 200 }
+				{ error: "User already exists" },
+				{ status: 400 }
 			);
 		}
-
-		// hash the password
-		const salt = await bcryptjs.genSalt(10);
-		const hashedPassword = await bcryptjs.hash(password, salt);
 
 		const newUser = new User({
 			username,
 			email,
-			password: hashedPassword,
+			password,
 		});
 
 		const savedUser = await newUser.save();
