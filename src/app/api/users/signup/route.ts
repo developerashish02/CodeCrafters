@@ -1,43 +1,50 @@
-import { connect } from "@/dbConfig/dbConfig";
+import dbConnect from "@/dbConfig/dbConfig";
 import User from "@/models/userModal";
 import { NextRequest, NextResponse } from "next/server";
 
-connect();
-
-export async function POST(request: NextRequest) {
-	console.log(request, "Request from backend");
+export async function POST(req: NextRequest) {
 	try {
-		const reqBody = await request.json();
+		await dbConnect();
+
+		const reqBody = await req.json();
+		console.log(reqBody);
 
 		const { username, email, password } = reqBody;
 
-		console.log(reqBody, "Req body from backend route file");
-
-		// Checking if user already exists
-		const user = await User.findOne({ email });
-
-		if (user) {
-			return NextResponse.json(
-				{ error: "User already exists" },
+		if (!username || !email || !password) {
+			return new NextResponse(
+				JSON.stringify({ error: "All fields are required." }),
 				{ status: 400 }
 			);
 		}
 
-		const newUser = new User({
+		const existingUser = await User.findOne({ email });
+		if (existingUser) {
+			return new NextResponse(
+				JSON.stringify({ error: "Email already in use." }),
+				{ status: 400 }
+			);
+		}
+
+		// Create a new user instance
+		const user = new User({
 			username,
 			email,
 			password,
 		});
 
-		const savedUser = await newUser.save();
-		console.log(savedUser);
+		// Save the user to the database
+		await user.save();
 
-		return NextResponse.json({
-			message: "User created successfully",
-			success: true,
-			savedUser,
-		});
+		return new NextResponse(
+			JSON.stringify({ message: "User registered successfully." }),
+			{ status: 200 }
+		);
 	} catch (error: any) {
-		return NextResponse.json({ error: error.message }, { status: 500 });
+		console.error(error);
+		return new NextResponse(
+			JSON.stringify({ error: "Internal server error." }),
+			{ status: 500 }
+		);
 	}
 }

@@ -1,10 +1,10 @@
-import { connect } from "@/dbConfig/dbConfig";
+import dbConnect from "@/dbConfig/dbConfig";
 import User from "@/models/userModal";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-connect();
+dbConnect();
 
 export async function POST(request: NextRequest) {
 	try {
@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
 
 		// check user is exist
 		const user = await User.findOne({ email });
+		
 		if (!user) {
 			return NextResponse.json(
 				{ error: "user does not exist" },
