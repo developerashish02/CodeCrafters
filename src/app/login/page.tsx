@@ -50,7 +50,7 @@ const LoginPage = () => {
 				/>
 
 				<p className="text-center mt-4 ">
-					Dont have an account?{" "}
+					Dont have an account?
 					<Link href="/signup">
 						<span className="cursor-pointer">Sign Up</span>
 					</Link>
