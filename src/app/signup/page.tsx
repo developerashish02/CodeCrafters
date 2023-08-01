@@ -5,6 +5,7 @@ import { validationSchema, initialFormValues } from "@/utils/formValidation";
 import useFormSubmit from "@/hooks/useFormSubmit";
 import { signupUser } from "@/utils/apiClient";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const SignupPage = () => {
 	const router = useRouter();
@@ -33,6 +34,12 @@ const SignupPage = () => {
 					onSubmit={handleSubmit}
 					submitButtonText="Sign Up"
 				/>
+				<p className="text-center mt-4 ">
+					Already have an account?{" "}
+					<Link href="/login">
+						<span className="cursor-pointer">Login</span>
+					</Link>
+				</p>
 			</div>
 		</div>
 	);

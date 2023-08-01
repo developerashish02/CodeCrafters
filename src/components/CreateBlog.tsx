@@ -1,43 +1,35 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { createBlog } from "@/utils/apiClient";
+import { useRouter } from "next/navigation";
 
 const CreateBlogForm: React.FC = () => {
+	const router = useRouter();
 	const initialValues = {
 		title: "",
 		content: "",
-		image: "",
-		video: "",
+		imageUrl: "",
+		videoUrl: "",
 	};
 
 	const validationSchema = Yup.object({
 		title: Yup.string().required("Title is required"),
 		content: Yup.string().required("Content is required"),
-		image: Yup.mixed().required("Image is required"),
-		video: Yup.mixed().test("is-video", "Invalid video format", (value) => {
-			if (value) {
-				return ["video/mp4", "video/quicktime"].includes(value.type);
-			}
-			return true;
-		}),
+		imageUrl: Yup.string()
+			.url("Invalid image URL format")
+			.required("Image URL is required"),
+		videoUrl: Yup.string().url("Invalid video URL format").notRequired(),
 	});
 
 	const handleSubmit = async (values: any, { setSubmitting }: any) => {
-		console.log(values.image, "Values..");
 		try {
-			const formData = new FormData();
-			formData.append("title", values.title);
-			formData.append("content", values.content);
-			formData.append("image", values.image);
-			formData.append("video", values.video);
-
 			// Send the data to the backend API route to save the blog
-			const response = await createBlog(formData);
-
+			const response = await createBlog(values);
 			console.log(response, "response");
 			alert("Blog created successfully!");
+			router.push("/");
+
 			// You can redirect the user to the blogs page or clear the form after successful submission.
 		} catch (error) {
 			console.error("Failed to create blog", error);
@@ -54,7 +46,7 @@ const CreateBlogForm: React.FC = () => {
 				validationSchema={validationSchema}
 				onSubmit={handleSubmit}
 			>
-				{({ isSubmitting, setFieldValue }) => (
+				{({ isSubmitting }) => (
 					<Form className="max-w-lg mx-auto">
 						<div className="mb-4">
 							<label
@@ -99,23 +91,19 @@ const CreateBlogForm: React.FC = () => {
 
 						<div className="mb-4">
 							<label
-								htmlFor="image"
+								htmlFor="imageUrl"
 								className="block text-sm font-medium text-gray-700"
 							>
-								Image:
+								Image URL:
 							</label>
-							<input
-								type="file"
-								id="image"
-								name="image"
-								accept="image/*"
-								onChange={(event) =>
-									setFieldValue("image", event.currentTarget.files?.[0])
-								}
+							<Field
+								type="text"
+								id="imageUrl"
+								name="imageUrl"
 								className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:ring-opacity-50"
 							/>
 							<ErrorMessage
-								name="image"
+								name="imageUrl"
 								component="div"
 								className="text-red-600 mt-1"
 							/>
@@ -123,23 +111,19 @@ const CreateBlogForm: React.FC = () => {
 
 						<div className="mb-4">
 							<label
-								htmlFor="video"
+								htmlFor="videoUrl"
 								className="block text-sm font-medium text-gray-700"
 							>
-								Video:
+								Video URL:
 							</label>
-							<input
-								type="file"
-								id="video"
-								name="video"
-								accept="video/mp4, video/quicktime"
-								onChange={(event) =>
-									setFieldValue("video", event.currentTarget.files?.[0])
-								}
+							<Field
+								type="text"
+								id="videoUrl"
+								name="videoUrl"
 								className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:ring-opacity-50"
 							/>
 							<ErrorMessage
-								name="video"
+								name="videoUrl"
 								component="div"
 								className="text-red-600 mt-1"
 							/>

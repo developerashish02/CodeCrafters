@@ -8,6 +8,7 @@ import useFormSubmit from "@/hooks/useFormSubmit";
 import { loginUser } from "@/utils/apiClient";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 const LoginPage = () => {
 	const router = useRouter();
 	const { isSubmitting, handleSubmit } = useFormSubmit(
@@ -38,6 +39,13 @@ const LoginPage = () => {
 					submitButtonText="Login"
 					showUsernameField={false}
 				/>
+
+				<p className="text-center mt-4 ">
+					Don't have an account?{" "}
+					<Link href="/signup">
+						<span className="cursor-pointer">Sign Up</span>
+					</Link>
+				</p>
 			</div>
 		</div>
 	);
